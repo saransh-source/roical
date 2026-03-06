@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign ROI & Revenue Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header class="header">
+        <h1>Campaign Revenue Calculator</h1>
+        <p class="disclaimer"><strong>Disclaimer:</strong> The figures shown are estimates based on typical campaign
+            benchmarks. Actual numbers depend on factors such as product-market fit, service demand, and the strength of
+            the offer.</p>
+    </header>
+
+    <main class="calculator-container full-4-grid">
+        <!-- Panel 1: Inputs (Top Left) -->
+        <section class="panel">
+            <div class="preset-buttons">
+                <button class="preset-btn" data-preset="low">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 6l-9.5 9.5-5-5L1 18" />
+                    </svg>
+                    Low Estimate
+                </button>
+                <button class="preset-btn active" data-preset="realistic">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <circle cx="12" cy="12" r="4" />
+                    </svg>
+                    Realistic
+                </button>
+                <button class="preset-btn" data-preset="high">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 18l-9.5-9.5-5 5L1 6" />
+                    </svg>
+                    High Estimate
+                </button>
+            </div>
+
+            <div class="input-groups-container">
+                <div class="input-group">
+                    <div class="input-header">
+                        <div class="label-with-icon">
+                            <label for="totalEmails">Total Emails / Month</label>
+                        </div>
+                        <input type="number" id="totalEmailsNum" value="50000" min="25000" max="1000000" step="25000"
+                            class="number-input">
+                    </div>
+                    <input type="range" id="totalEmails" value="50000" min="25000" max="1000000" step="25000"
+                        class="slider-input">
+                </div>
+
+                <!-- Static Assumptions Panel (Driven by Presets) -->
+                <div class="assumptions-panel">
+                    <div class="assumptions-header">
+                        <span class="label-with-icon">Campaign Assumptions</span>
+                        <span class="assumptions-subtitle">Based on selected estimate</span>
+                    </div>
+                    <div class="assumptions-grid">
+                        <div class="assumption-item">
+                            <span class="assume-label">Emails / Lead</span>
+                            <span class="assume-val mono-font" id="disp_emailsPerLead">3</span>
+                        </div>
+                        <div class="assumption-item">
+                            <span class="assume-label">Reply Rate</span>
+                            <span class="assume-val mono-font" id="disp_replyRate">1.5%</span>
+                        </div>
+                        <div class="assumption-item">
+                            <span class="assume-label">Positive Reply</span>
+                            <span class="assume-val mono-font" id="disp_positiveReplyRate">10%</span>
+                        </div>
+                        <div class="assumption-item">
+                            <span class="assume-label">Booking Rate</span>
+                            <span class="assume-val mono-font" id="disp_bookingRate">25%</span>
+                        </div>
+                        <div class="assumption-item">
+                            <span class="assume-label">Show-Up Rate</span>
+                            <span class="assume-val mono-font" id="disp_showUpRate">70%</span>
+                        </div>
+                        <div class="assumption-item">
+                            <span class="assume-label">Close Rate</span>
+                            <span class="assume-val mono-font" id="disp_closeRate">20%</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="input-group">
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="input-group" style="margin-bottom: 0; flex: 1;">
+                            <div class="input-header">
+                                <label style="font-size: 0.75rem;">Avg Monthly Ticket ($)</label>
+                                <input type="number" id="ticketSizeNum" value="2500" min="500" max="20000" step="100"
+                                    class="number-input" style="width: 80px; font-size: 0.8rem; padding: 0.2rem;">
+                            </div>
+                            <input type="range" id="ticketSize" min="500" max="20000" step="100" value="2500"
+                                class="slider-input">
+                        </div>
+
+                        <div class="input-group" style="margin-bottom: 0; flex: 1;">
+                            <div class="input-header">
+                                <label style="font-size: 0.75rem;">Avg Client Retainment</label>
+                                <input type="number" id="clientLtvMonthsNum" value="6" min="1" max="36" step="1"
+                                    class="number-input" style="width: 60px; font-size: 0.8rem; padding: 0.2rem;">
+                            </div>
+                            <input type="range" id="clientLtvMonths" min="1" max="36" step="1" value="6"
+                                class="slider-input">
+                        </div>
+                    </div>
+
+                    <div class="split-inputs">
+                        <!-- Term Length -->
+                        <div class="input-group">
+                            <div class="input-header">
+                                <div class="label-with-icon"><label>Partnership Term (Mo)</label></div>
+                            </div>
+                            <div class="radio-group" id="termLengthGroup">
+                                <label class="radio-btn"><input type="radio" name="termLength" value="4">
+                                    <span>4</span></label>
+                                <label class="radio-btn active"><input type="radio" name="termLength" value="6" checked>
+                                    <span>6</span></label>
+                                <label class="radio-btn"><input type="radio" name="termLength" value="9">
+                                    <span>9</span></label>
+                                <label class="radio-btn"><input type="radio" name="termLength" value="12">
+                                    <span>12</span></label>
+                            </div>
+                        </div>
+
+                        <!-- Linked Rev Share Display -->
+                        <div class="input-group">
+                            <div class="input-header">
+                                <div class="label-with-icon"><label>Rev-Share Included</label></div>
+                            </div>
+                            <div class="linked-val-display" style="width: 100%; min-width: 120px;">
+                                <span class="linked-val-text" id="revShareDisplay">15%</span>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)"
+                                    stroke-width="2" style="margin-left:4px;">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+        </section>
+
+        <!-- Panel 2: ROI & Funnel (Top Right) -->
+        <section class="panel">
+
+            <div style="display: flex; flex-direction: column; gap: 1.5rem; height: 100%;">
+                <div>
+                    <h3 class="section-divider" style="margin:0 0 0.5rem 0;">Campaign Funnel</h3>
+                    <div class="infographic-container"
+                        style="margin: 0; min-height: 140px; display: flex; align-items: center;">
+                        <div class="funnel-infographic" id="funnelInfographic" style="width: 100%;">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+                </div>
+                <div style="flex: 1; display: flex; flex-direction: column;">
+                    <h3 class="section-divider" style="margin:0 0 0.5rem 0;">Projected ROI</h3>
+                    <div class="cards-grid" style="display: flex; gap: 0.75rem; flex: 1; justify-content: center;">
+                        <div class="summary-card highlight"
+                            style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+                            <div class="card-title">Added MRR <span class="term-display">Term</span></div>
+                            <div class="card-value success-text" data-val="0" id="totalMrrAdded">$0</div>
+                        </div>
+                        <div class="summary-card highlight"
+                            style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+                            <div class="card-title">Net Profit <span class="term-display">Term</span></div>
+                            <div class="card-value success-text" data-val="0" id="netProfit">$0</div>
+                        </div>
+                        <div class="summary-card highlight"
+                            style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+                            <div class="card-title">ROI <span class="term-display">Term</span></div>
+                            <div class="card-value success-text" data-val="0" id="roiPercent">0%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Panel 3: Technology Fees (Bottom Left) -->
+        <section class="panel">
+            <div
+                style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <h3 class="section-divider" style="margin:0 0 0.25rem 0;">Technology Fees</h3>
+                    <p class="subtitle" style="margin:0; font-size: 0.75rem;">Complete monthly infrastructure.</p>
+                </div>
+                <div class="linked-val-text success-text mono-font" id="monthlyTotalValue"
+                    style="font-size:1.4rem; font-weight: 800; padding: 0.5rem 1rem; background: rgba(16, 185, 129, 0.1); border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                    $0</div>
+            </div>
+
+            <div class="bento-grid tech-fees-grid">
+                <!-- Mailboxes -->
+                <div class="bento-card">
+                    <div class="bento-inner">
+                        <div class="bento-front highlight">
+                            <div class="bento-header">
+                                <span class="bento-title">Mailboxes</span>
+                                <div class="bento-brand-icons">
+                                    <!-- Google -->
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                        <path
+                                            d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z" />
+                                    </svg>
+                                    <!-- Outlook -->
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path
+                                            d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                        </path>
+                                        <polyline points="22,6 12,13 2,6"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="bento-value" id="valMailboxes">$0</div>
+                            <div class="bento-desc">Buying <span id="dynamicMailboxCount"
+                                    style="color:white; font-weight:700;">Many</span> mailboxes @ <span
+                                    id="dynamicMailboxUnitCost" style="color:white; font-weight:700;">$3.50</span>/mo.
+                            </div>
+                        </div>
+                        <div class="bento-back">
+                            <div class="bento-back-title">Setup Details</div>
+                            <ul class="bento-back-list">
+                                <li>Sending 10-30 emails/day</li>
+                                <li>Deliverability monitoring</li>
+                                <li>Fully managed</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Servers -->
+                <div class="bento-card">
+                    <div class="bento-inner">
+                        <div class="bento-front highlight">
+                            <div class="bento-header">
+                                <span class="bento-title">Servers</span>
+                                <div class="bento-brand-icons">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                                        <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                                        <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                                        <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="bento-value" id="valServers">$0</div>
+                            <div class="bento-desc">Delivery infra & real-time rotation.</div>
+                        </div>
+                        <div class="bento-back">
+                            <div class="bento-back-title">Infra Details</div>
+                            <ul class="bento-back-list">
+                                <li>Dedicated IPs</li>
+                                <li>Custom domains</li>
+                                <li>Sender tracking</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sourcing -->
+                <div class="bento-card">
+                    <div class="bento-inner">
+                        <div class="bento-front highlight">
+                            <div class="bento-header">
+                                <span class="bento-title">Sourcing</span>
+                                <div class="bento-brand-icons">
+                                    <!-- Apollo -->
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                        <path
+                                            d="M12,0C5.372,0 0,5.373 0,12 0,18.628 5.372,24 12,24 18.627,24 24,18.628 24,12A12.014,12.014 0 0 0 23.527,8.657 0.6,0.6 0 0 0 22.4,9.066H22.398C22.663,10.009 22.8,10.994 22.8,12A10.73,10.73 0 0 1 19.637,19.637 10.729,10.729 0 0 1 12,22.8 10.73,10.73 0 0 1 4.363,19.637 10.728,10.728 0 0 1 1.2,12 10.73,10.73 0 0 1 4.363,4.363 10.728,10.728 0 0 1 12,1.2C14.576,1.2 17.013,2.096 18.958,3.74A1.466,1.466 0 1 0 19.82,2.9 11.953,11.953 0 0 0 12,0ZM10.56,5.88 6.36,16.782H8.99L9.677,14.934H13.646L12.927,12.892H10.314L12.014,8.201 15.038,16.781H17.669L13.47,5.88Z" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="bento-value" id="valSourcing">$0</div>
+                            <div class="bento-desc">Custom scraping via Apollo & Clay.</div>
+                        </div>
+                        <div class="bento-back">
+                            <div class="bento-back-title">Data Sourcing</div>
+                            <ul class="bento-back-list">
+                                <li>Apollo, Prospeo</li>
+                                <li>PitchBook</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enrichment -->
+                <div class="bento-card">
+                    <div class="bento-inner">
+                        <div class="bento-front highlight">
+                            <div class="bento-header">
+                                <span class="bento-title">Enrichment</span>
+                                <div class="bento-brand-icons">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="bento-value" id="valEnrich">$0</div>
+                            <div class="bento-desc">Waterfall verification for 100% hits.</div>
+                        </div>
+                        <div class="bento-back">
+                            <div class="bento-back-title">Verification</div>
+                            <ul class="bento-back-list">
+                                <li>Waterfall verification</li>
+                                <li>100% hard bounce block</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Automation -->
+                <div class="bento-card">
+                    <div class="bento-inner">
+                        <div class="bento-front highlight">
+                            <div class="bento-header">
+                                <span class="bento-title">AI Automation</span>
+                                <div class="bento-brand-icons">
+                                    <!-- Claude -->
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                        <path
+                                            d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="bento-value" id="valAi">$0</div>
+                            <div class="bento-desc">Claude & GPT-4 orchestration & inbox categorization.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Panel 4: Additionals (Bottom Right) -->
+        <section class="panel">
+            <h3 class="section-divider" style="margin:0 0 1.5rem 0;">Optional Growth Accelerators</h3>
+
+            <div class="bento-grid">
+                <div class="bento-card full-width">
+                    <div class="bento-inner">
+                        <div class="bento-front highlight"
+                            style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; padding: 1.5rem;">
+                            <div>
+                                <div class="bento-title"
+                                    style="color: var(--success); font-size: 1.1rem; margin-bottom: 0.25rem;">LinkedIn
+                                    Outreach</div>
+                                <div class="bento-desc" style="max-width: 300px;">Automated connection requests &
+                                    engaging sequences.</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div class="bento-value" style="color: white; font-size: 1.8rem; margin-bottom: 0;">
+                                    +$300</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">Per Month</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bento-card full-width">
+                    <div class="bento-inner">
+                        <div class="bento-front highlight"
+                            style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; padding: 1.5rem;">
+                            <div>
+                                <div class="bento-title"
+                                    style="color: var(--primary); font-size: 1.1rem; margin-bottom: 0.25rem;">CRM & Ops
+                                </div>
+                                <div class="bento-desc" style="max-width: 300px;">Custom CRM setup, pipeline routing,
+                                    and tracking.</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div class="bento-value" style="color: white; font-size: 1.8rem; margin-bottom: 0;">
+                                    +$150</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">Per Month</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.0.0/countUp.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

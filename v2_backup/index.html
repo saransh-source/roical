@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign ROI & Revenue Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header class="header">
+        <h1>Campaign Revenue Calculator</h1>
+        <p class="disclaimer"><strong>Disclaimer:</strong> The figures shown are estimates based on typical campaign
+            benchmarks. Actual numbers depend on factors such as product-market fit, service demand, and the strength of
+            the offer.</p>
+    </header>
+
+    <main class="calculator-container">
+        <!-- Left Panel: Inputs -->
+        <section class="panel left-panel">
+            <div class="preset-buttons">
+                <button class="preset-btn" data-preset="low">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 6l-9.5 9.5-5-5L1 18" />
+                    </svg>
+                    Low Estimate
+                </button>
+                <button class="preset-btn active" data-preset="realistic">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <circle cx="12" cy="12" r="4" />
+                    </svg>
+                    Realistic
+                </button>
+                <button class="preset-btn" data-preset="high">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 18l-9.5-9.5-5 5L1 6" />
+                    </svg>
+                    High Estimate
+                </button>
+            </div>
+
+            <div class="input-groups-container">
+                <div class="input-group">
+                    <div class="input-header">
+                        <div class="label-with-icon">
+                            <label for="totalEmails">Total Emails / Month</label>
+                        </div>
+                        <input type="number" id="totalEmailsNum" value="25000" min="25000" max="1000000" step="5000"
+                            class="number-input">
+                    </div>
+                    <input type="range" id="totalEmails" value="25000" min="25000" max="1000000" step="5000"
+                        class="slider-input">
+                </div>
+
+                <div class="input-group">
+                    <div class="input-header">
+                        <div class="label-with-icon">
+                            <label for="emailsPerLead">Emails Per Lead</label>
+                        </div>
+                        <input type="number" id="emailsPerLeadNum" value="3" min="1" max="10" step="1"
+                            class="number-input">
+                    </div>
+                    <input type="range" id="emailsPerLead" value="3" min="1" max="10" step="1" class="slider-input">
+                </div>
+
+                <div class="input-group">
+                    <div class="input-header">
+                        <div class="label-with-icon">
+                            <label for="replyRate">Reply Rate (%)</label>
+                        </div>
+                        <input type="number" id="replyRateNum" value="1.5" min="0.1" max="10" step="0.1"
+                            class="number-input">
+                    </div>
+                    <input type="range" id="replyRate" value="1.5" min="0.1" max="10" step="0.1" class="slider-input">
+                </div>
+
+                <div class="input-group">
+                    <div class="input-header">
+                        <div class="label-with-icon">
+                            <label for="positiveReplyRate">Positive Reply Rate (%)</label>
+                        </div>
+                        <input type="number" id="positiveReplyRateNum" value="10" min="1" max="100" step="1"
+                            class="number-input">
+                    </div>
+                    <input type="range" id="positiveReplyRate" value="10" min="1" max="100" step="1"
+                        class="slider-input">
+                </div>
+
+                <div class="input-group">
+                    <div class="input-header">
+                        <div class="label-with-icon">
+                            <label for="bookingRate">Appointment Booking Rate (%)</label>
+                        </div>
+                        <input type="number" id="bookingRateNum" value="25" min="1" max="100" step="1"
+                            class="number-input">
+                    </div>
+                    <input type="range" id="bookingRate" value="25" min="1" max="100" step="1" class="slider-input">
+                </div>
+
+                <div class="input-group">
+                    <div class="input-header">
+                        <div class="label-with-icon">
+                            <label for="showUpRate">Show-Up Rate (%)</label>
+                        </div>
+                        <input type="number" id="showUpRateNum" value="70" min="1" max="100" step="1"
+                            class="number-input">
+                    </div>
+                    <input type="range" id="showUpRate" value="70" min="1" max="100" step="1" class="slider-input">
+                </div>
+
+                <div class="input-group">
+                    <div class="input-header">
+                        <div class="label-with-icon">
+                            <label for="closeRate">Close Rate (%)</label>
+                        </div>
+                        <input type="number" id="closeRateNum" value="20" min="1" max="100" step="1"
+                            class="number-input">
+                    </div>
+                    <input type="range" id="closeRate" value="20" min="1" max="100" step="1" class="slider-input">
+                </div>
+
+                <div class="input-group">
+                    <div class="input-header">
+                        <div class="label-with-icon">
+                            <label for="ticketSize">Avg Monthly Ticket Size ($)</label>
+                        </div>
+                        <input type="number" id="ticketSizeNum" value="2500" min="100" max="50000" step="100"
+                            class="number-input">
+                    </div>
+                    <input type="range" id="ticketSize" value="2500" min="100" max="50000" step="100"
+                        class="slider-input">
+                </div>
+
+                <div class="input-group">
+                    <div class="input-header">
+                        <div class="label-with-icon">
+                            <label for="clientLtvMonths">Avg Client Retainment (Months)</label>
+                        </div>
+                        <input type="number" id="clientLtvMonthsNum" value="6" min="1" max="60" step="1"
+                            class="number-input">
+                    </div>
+                    <input type="range" id="clientLtvMonths" value="6" min="1" max="60" step="1" class="slider-input">
+                </div>
+
+                <div class="split-inputs">
+                    <!-- Term Length -->
+                    <div class="input-group">
+                        <div class="input-header">
+                            <div class="label-with-icon"><label>Partnership Term (Mo)</label></div>
+                        </div>
+                        <div class="radio-group" id="termLengthGroup">
+                            <label class="radio-btn"><input type="radio" name="termLength" value="4">
+                                <span>4</span></label>
+                            <label class="radio-btn active"><input type="radio" name="termLength" value="6" checked>
+                                <span>6</span></label>
+                            <label class="radio-btn"><input type="radio" name="termLength" value="9">
+                                <span>9</span></label>
+                            <label class="radio-btn"><input type="radio" name="termLength" value="12">
+                                <span>12</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Rev Share Percentage -->
+                    <div class="input-group">
+                        <div class="input-header">
+                            <div class="label-with-icon"><label>Rev-Share (%)</label></div>
+                        </div>
+                        <div class="radio-group" id="revShareGroup">
+                            <label class="radio-btn active"><input type="radio" name="revShare" value="10" checked>
+                                <span>10%</span></label>
+                            <label class="radio-btn"><input type="radio" name="revShare" value="15">
+                                <span>15%</span></label>
+                            <label class="radio-btn"><input type="radio" name="revShare" value="20">
+                                <span>20%</span></label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Right Panel: Tabs System -->
+        <section class="panel right-panel">
+
+            <div class="tabs-header">
+                <button class="tab-btn active" data-tab="tab-roi">Projected ROI Summary</button>
+                <button class="tab-btn" data-tab="tab-costs">Monthly Cost Breakdown</button>
+            </div>
+
+            <!-- TAB 1: ROI & Funnel -->
+            <div class="tab-content active" id="tab-roi">
+
+                <h3 class="section-divider" style="margin-top:0;">Campaign Conversion Funnel</h3>
+                <!-- Custom SVG/CSS Funnel Infographic -->
+                <div class="infographic-container">
+                    <div class="funnel-infographic" id="funnelInfographic">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+
+                <h3 class="section-divider" style="margin-top:2rem;">Financial Projections</h3>
+                <div class="cards-grid">
+                    <div class="summary-card highlight" style="flex:1;">
+                        <div class="card-title">Net Profit <span class="term-display">Term</span></div>
+                        <div class="card-value success-text" data-val="0" id="netProfit">$0</div>
+                    </div>
+                    <div class="summary-card highlight" style="flex:1;">
+                        <div class="card-title">ROI <span class="term-display">Term</span></div>
+                        <div class="card-value success-text" data-val="0" id="roiPercent">0%</div>
+                    </div>
+                </div>
+
+                <div class="cards-grid three-col small-cards">
+                    <div class="summary-card">
+                        <div class="card-title">Total Revenue (TCV)</div>
+                        <div class="card-value small" data-val="0" id="totalTcv">$0</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="card-title">Total Added MRR</div>
+                        <div class="card-value small" data-val="0" id="totalMrrAdded">$0</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="card-title">Total Cost (Ops+Rev)</div>
+                        <div class="card-value small" data-val="0" id="totalCost">$0</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- TAB 2: Costs -->
+            <div class="tab-content" id="tab-costs">
+                <div class="cost-breakdown-wrapper">
+                    <h3 class="section-divider" style="margin-top:0;">Monthly Operational Expenses</h3>
+                    <p class="subtitle">Detailed breakdown of fixed and variable costs associated with infrastructure
+                        scaling.</p>
+
+                    <div class="cost-table" id="costBreakdownList">
+                        <!-- Injected by JS -->
+                    </div>
+
+                    <div class="cost-table-total">
+                        <div class="cost-total-label">Total Monthly Ops Cost</div>
+                        <div class="cost-total-value mono-font" data-val="0" id="monthlyTotalValue">$0</div>
+                    </div>
+
+                    <h3 class="section-divider" style="margin-top:3rem;">Term Duration Expenses</h3>
+                    <div class="cards-grid">
+                        <div class="summary-card">
+                            <div class="card-title">Total Ops Cost <span class="term-display">Term</span></div>
+                            <div class="card-value small" data-val="0" id="totalOpsCost">$0</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="card-title">Total Rev-Share <span class="term-display">Term</span></div>
+                            <div class="card-value small" data-val="0" id="totalRevShareCost">$0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.0.0/countUp.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
